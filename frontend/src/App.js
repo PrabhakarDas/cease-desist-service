@@ -4,6 +4,8 @@ import { CssBaseline, Button } from "@mui/material";
 import HeroSection from "./components/HeroSection";
 import FileUpload from "./components/FileUpload";
 import Footer from "./components/Footer";
+import "./App.css"; // Import the updated CSS file
+import CustomLogo from "./assets/custom-logo.png"; // Path to your custom logo
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -24,6 +26,9 @@ function App() {
       >
         Toggle Dark Mode
       </Button>
+      <header className="App-header">
+        <img src={CustomLogo} className="App-logo" alt="Custom Logo" />
+      </header>
       <HeroSection />
       <FileUpload />
       <Footer />

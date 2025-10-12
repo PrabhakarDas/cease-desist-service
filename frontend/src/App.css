@@ -3,31 +3,13 @@
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  height: 120px; /* Adjust the size of your custom logo */
+  margin: 0 auto; /* Center the logo horizontally */
+  display: block; /* Ensure the logo is treated as a block element */
+  pointer-events: none; /* Disable pointer events on the logo */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
+/* Optional: Remove the spinning animation */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +17,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-header {
+  background-color: transparent; /* Remove the dark background */
+  min-height: 150px; /* Adjust the height to fit the logo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+  border: none; /* Remove any border */
+}
+
+.App-link {
+  color: #61dafb;
 }

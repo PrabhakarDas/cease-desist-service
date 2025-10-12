@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Box, Typography, Button, Card, CardContent, Alert } from "@mui/material";
+import { Box, Typography, Button, Card, CardContent, Alert, useTheme } from "@mui/material";
 import axios from "axios";
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const theme = useTheme(); // Access the current theme (dark or light)
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: ".jpg,.jpeg,.png,.pdf", // Accept specific file types
@@ -53,13 +54,15 @@ const FileUpload = () => {
           textAlign: "center",
           cursor: "pointer",
           marginBottom: "20px",
-          backgroundColor: "#f9f9f9",
+          backgroundColor: theme.palette.mode === "dark" ? "#424242" : "#f9f9f9",
         }}
       >
         <input {...getInputProps()} />
-        <Typography>Drag & drop a file here, or click to select one</Typography>
+        <Typography sx={{ color: theme.palette.text.primary }}>
+          Drag & drop a file here, or click to select one
+        </Typography>
         {file && (
-          <Typography variant="body2" sx={{ marginTop: "10px" }}>
+          <Typography variant="body2" sx={{ marginTop: "10px", color: theme.palette.text.secondary }}>
             Selected File: {file.name}
           </Typography>
         )}
@@ -75,9 +78,6 @@ const FileUpload = () => {
             <Typography><strong>Classification:</strong> {result.classification}</Typography>
             <Typography variant="body1" sx={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
               <strong>Extracted Text:</strong> {result.extracted_text}
-            </Typography>
-            <Typography variant="body1" sx={{ marginTop: "10px", whiteSpace: "pre-wrap", color: "gray" }}>
-              <strong>Translated Text:</strong> {result.translated_text}
             </Typography>
           </CardContent>
         </Card>
