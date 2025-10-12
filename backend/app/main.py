@@ -2,7 +2,6 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.ocr import extract_text_from_pdf, extract_text_from_image
 from app.classifier import classify_request
-from app.utils import write_to_datastore, log_for_manual_review, archive_file
 import os
 
 app = FastAPI()
@@ -21,10 +20,16 @@ os.makedirs("static", exist_ok=True)
 
 @app.get("/")
 def read_root():
+    """
+    Root endpoint to verify the API is running.
+    """
     return {"message": "Welcome to the Cease & Desist Classification API!"}
 
 @app.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
+    """
+    Endpoint to handle file uploads, extract text, classify the text, and return results.
+    """
     try:
         # Save the uploaded file
         file_location = f"static/{file.filename}"
@@ -42,19 +47,11 @@ async def upload_file(file: UploadFile = File(...)):
         # Classify the extracted text
         classification = classify_request(extracted_text)
 
-        # Perform actions based on classification
-        if classification == "Cease":
-            write_to_datastore(file.filename, extracted_text)
-        elif classification == "Uncertain":
-            log_for_manual_review(file.filename, extracted_text)
-        elif classification == "Irrelevant":
-            archive_file(file_location)
-
         # Return the classification and extracted text
         return {
             "filename": file.filename,
             "classification": classification,
-            "extracted_text": extracted_text
+            "extracted_text": extracted_text,
         }
 
     except HTTPException as http_exc:

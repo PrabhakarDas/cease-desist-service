@@ -1,17 +1,26 @@
 import React, { useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { Box, Typography, Button, Card, CardContent, Alert } from "@mui/material";
 import axios from "axios";
-import { Button, TextField, Typography, Box, Alert, Card, CardContent } from "@mui/material";
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-    setResult(null);
-    setError(null);
-  };
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: ".jpg,.jpeg,.png,.pdf", // Accept specific file types
+    multiple: false, // Allow only one file at a time
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length > 0) {
+        setFile(acceptedFiles[0]);
+        setResult(null);
+        setError(null);
+      } else {
+        setError("Invalid file type. Please upload a valid file.");
+      }
+    },
+  });
 
   const handleUpload = async () => {
     if (!file) {
@@ -36,15 +45,28 @@ const FileUpload = () => {
 
   return (
     <Box sx={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        Cease & Desist Classification
-      </Typography>
-      <Box sx={{ marginBottom: "20px" }}>
-        <TextField type="file" onChange={handleFileChange} fullWidth />
-        <Button variant="contained" color="primary" onClick={handleUpload} sx={{ marginTop: "10px" }}>
-          Upload
-        </Button>
+      <Box
+        {...getRootProps()}
+        sx={{
+          border: "2px dashed #ccc",
+          padding: "20px",
+          textAlign: "center",
+          cursor: "pointer",
+          marginBottom: "20px",
+          backgroundColor: "#f9f9f9",
+        }}
+      >
+        <input {...getInputProps()} />
+        <Typography>Drag & drop a file here, or click to select one</Typography>
+        {file && (
+          <Typography variant="body2" sx={{ marginTop: "10px" }}>
+            Selected File: {file.name}
+          </Typography>
+        )}
       </Box>
+      <Button variant="contained" color="primary" onClick={handleUpload}>
+        Upload
+      </Button>
       {result && (
         <Card sx={{ marginTop: "20px" }}>
           <CardContent>
@@ -53,6 +75,9 @@ const FileUpload = () => {
             <Typography><strong>Classification:</strong> {result.classification}</Typography>
             <Typography variant="body1" sx={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
               <strong>Extracted Text:</strong> {result.extracted_text}
+            </Typography>
+            <Typography variant="body1" sx={{ marginTop: "10px", whiteSpace: "pre-wrap", color: "gray" }}>
+              <strong>Translated Text:</strong> {result.translated_text}
             </Typography>
           </CardContent>
         </Card>
