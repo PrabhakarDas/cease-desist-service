@@ -1,19 +1,27 @@
 import os
 
-def write_to_datastore(filename, text):
-    # Simulate writing to a datastore
-    print(f"Writing to datastore: {filename}")
-    # Add your datastore logic here
+def write_to_datastore(filename, extracted_text, timestamp):
+    """
+    Write details of a "Cease" request to a datastore (e.g., a flat file or database).
+    """
+    datastore_path = "static/datastore.txt"
+    with open(datastore_path, "a") as f:
+        f.write(f"{timestamp} - {filename} - Cease Request\n")
+        f.write(f"Extracted Text: {extracted_text}\n\n")
 
-def log_for_manual_review(filename, text):
-    # Simulate logging for manual review
-    print(f"Logging for manual review: {filename}")
-    # Add your logging logic here
+def log_for_audit(filename, extracted_text, classification, timestamp):
+    """
+    Log the request for audit purposes.
+    """
+    audit_log_path = "static/audit_log.txt"
+    with open(audit_log_path, "a") as f:
+        f.write(f"{timestamp} - {filename} - Classification: {classification}\n")
+        f.write(f"Extracted Text: {extracted_text}\n\n")
 
-def archive_file(file_path):
-    # Simulate archiving the file
-    archive_dir = "archive"
-    os.makedirs(archive_dir, exist_ok=True)
-    archive_path = os.path.join(archive_dir, os.path.basename(file_path))
-    os.rename(file_path, archive_path)
-    print(f"Archived file: {archive_path}")
+def archive_file(filename, timestamp):
+    """
+    Archive "Irrelevant" requests by writing details to a flat file.
+    """
+    archive_path = "static/archive.txt"
+    with open(archive_path, "a") as f:
+        f.write(f"{timestamp} - {filename} - Archived as Irrelevant\n")

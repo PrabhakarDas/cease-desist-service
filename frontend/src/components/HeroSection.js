@@ -22,9 +22,15 @@ const HeroSection = () => {
       </Typography>
       <Typography
         variant="h6"
+        sx={{ color: theme.palette.text.secondary, marginBottom: "20px" }}
+      >
+        Automating the classification of customer requests into Cease, Uncertain, or Irrelevant categories.
+      </Typography>
+      <Typography
+        variant="body1"
         sx={{ color: theme.palette.text.secondary }}
       >
-        Upload scanned documents and classify them into Cease, Uncertain, or Irrelevant categories.
+        Upload scanned documents and let our system classify them for you. Save time and ensure accuracy with our automated solution.
       </Typography>
     </Box>
   );
